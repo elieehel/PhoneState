@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+xmlns:android="http://schemas.android.com/apk/res/android"
+id="com.cellip.lyncapp"
+version="2.0.0">
+<name>Hello</name>
+<asset src="www/phonestate.js" target="js/phonestate.js" />
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="com.cellip.lyncapp" version="0.0.1">
+    <name>PhoneState</name>
+    <description>Plugin to extract advanced network information such as cell ID, LAC etc. for android devices</description>
+    <license>Apache 2.0</license>
+    <keywords>cordova,signal,network</keywords>
+    <author>Abbas Dawood, Karl Baria</author>
+    <!--<repo>https://github.com/abbasdawood/com.abbasdawood.cordova.signal.git</repo>-->
+
+    <js-module src="www/phonestate.js" name="phonestate">
+        <clobbers target="phonestate" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PhoneState">
+                <param name="android-package" value="com.cellip.lyncapp.PhoneState" />
+            </feature>
+        </config-file>
+
+        <source-file src="src/android/PhoneState.java" target-dir="src/com/cellip/lyncapp/" />
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+        </config-file>
+    </platform>
+    <platform name="ios">
+    		<framework src="Foundation.framework" />
+    		<framework src="CoreTelephony.framework" />
+    		<config-file target="res/xml/config.xml" parent="/*">
+    				<feature name="PhoneState">
+    						<param name="ios-package" value="PhoneState" />
+    				</feature>
+    		</config-file>
+    		
+    		<header-file src="src/ios/PhoneState.h" />
+    		<source-file src="src/ios/PhoneState.m" />
+    </platform>
+</plugin>
