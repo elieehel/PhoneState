@@ -67,7 +67,7 @@ public class PhoneState extends CordovaPlugin {
             return true;
         }
         return false;*/
-        Intent intent = new Intent(this, CallStateTracker.class);
+        Intent intent = new Intent(context, CallStateTracker.class);
         cordova.getActivity().startService(intent);
         return true;
     }
