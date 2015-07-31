@@ -1,7 +1,5 @@
 package com.cellip.lyncapp;
 
-import com.cellip.lyncapp.PhoneState.ListenToPhoneState;
-
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
