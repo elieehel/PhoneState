@@ -82,8 +82,6 @@ public class CallStateTracker extends Service  {
 			default:
 				break;
 			}
-			for (int i = 0; i < 10; i++)
-				System.out.println("Call state is now " + state);
 			lastState = state;
 		}
 
