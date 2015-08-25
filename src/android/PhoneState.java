@@ -22,6 +22,7 @@ public class PhoneState extends CordovaPlugin {
     
     private CallbackContext connectionCallbackContext;
     private boolean init = false;
+	private static int lastState = TelephonyManager.CALL_STATE_IDLE;
     private CordovaInterface cordova;
     private CordovaWebView webView;
     private ListenToPhoneState listener;
@@ -113,13 +114,15 @@ public class PhoneState extends CordovaPlugin {
                 
                 sendUpdate("busy");
 
-                mHandler.postDelayed(mLaunchTask, 1500);
+				if (lastState == TelephonyManager.CALL_STATE_RINGING)
+					mHandler.postDelayed(mLaunchTask, 1500);
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
                 break;
             default:
                 break;
             }
+            lastState = state;
         }
 
     }
