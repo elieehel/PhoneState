@@ -12,6 +12,7 @@ import android.telephony.TelephonyManager;
 public class CallStateTracker extends Service  {
 
 	private Handler mHandler = new Handler();
+	private static int lastState = TelephonyManager.CALL_STATE_IDLE;
 	private Context context;
 	private ListenToPhoneState listener;
 	private TelephonyManager tManager;
@@ -73,13 +74,17 @@ public class CallStateTracker extends Service  {
 			case TelephonyManager.CALL_STATE_IDLE:
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
-				mHandler.postDelayed(mLaunchTask, 2000);
+				if (lastState == TelephonyManager.CALL_STATE_RINGING)
+					mHandler.postDelayed(mLaunchTask, 2000);
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
 				break;
 			default:
 				break;
 			}
+			for (int i = 0; i < 100; i++)
+				System.out.println("Call state is now " + state);
+			lastState = state;
 		}
 
 	}
