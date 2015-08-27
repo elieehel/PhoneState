@@ -23,6 +23,9 @@ PhoneState.prototype.change = function(c) {
 	phonestate.state = c;
 	cordova.fireWindowEvent("watchingnetwork", c);
 };
+window.pluginReload = function() {
+	exec(function() {console.log("RELOADED");}, function() {console.log("reload error");}, "PhoneState", "resetplugin", ["asd"]);
+};
 
 /*window.echo = function(str, callback) {
         exec(callback, function(err) {
