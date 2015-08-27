@@ -27,6 +27,10 @@ window.pluginReload = function() {
 	exec(function() {console.log("RELOADED");}, function() {console.log("reload error");}, "PhoneState", "resetplugin", ["asd"]);
 };
 
+window.splashReset = function() {
+	exec(function() {console.log("HIDDEN");}, function() {console.log("reload error");}, "PhoneState", "hide", ["asd"]);
+};
+
 /*window.echo = function(str, callback) {
         exec(callback, function(err) {
             callback('Nothing to echo. '+err);
