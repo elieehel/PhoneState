@@ -67,9 +67,9 @@ public class PhoneState extends CordovaPlugin {
         	Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
         	webView.getPluginManager().setPluginEntries(pluginEntries);
         } else if (action.equals("hide")) {
-            CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
+            /*CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
             System.out.println("WE HAS PLUGIN " + cp);
-            cp.onMessage("splashscreen", "hide");
+            cp.onMessage("splashscreen", "hide");*/
         }
 
         context = this.cordova.getActivity().getApplicationContext(); 
