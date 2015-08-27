@@ -33,7 +33,7 @@ PhoneState.prototype.change = function(c) {
 
 var phonestate = new PhoneState();
 phonestate.pluginReload = function() {
-	exec(function() {console.log("RELOADED");}, function() {console.log("reload error");}, "PhoneState", "resetplugin", ["asd"]);
+	exec(function() {console.log("RELOADED");}, function(err) {console.log("reload error"); console.log(err);}, "PhoneState", "resetplugin", ["asd"]);
 };
 
 phonestate.splashReset = function() {
