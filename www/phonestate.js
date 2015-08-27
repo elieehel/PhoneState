@@ -37,6 +37,6 @@ phonestate.pluginReload = function() {
 };
 
 phonestate.splashReset = function() {
-	exec(function() {console.log("HIDDEN");}, function() {console.log("reload error");}, "PhoneState", "hide", ["asd"]);
+	exec(function() {console.log("HIDDEN");}, function(err) {console.log("reload error"); console.log(err);}, "PhoneState", "hide", ["asd"]);
 };
 module.exports = phonestate;
