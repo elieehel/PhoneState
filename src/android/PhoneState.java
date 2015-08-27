@@ -1,10 +1,12 @@
 package com.cellip.lyncapp;
-
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.PluginEntry;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -62,10 +64,8 @@ public class PhoneState extends CordovaPlugin {
 	            tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
 	        }
         } else if (action.equals("resetplugin")) {
-        	webView.getPluginManager().init();
-        	CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
-        	System.out.println("WE HAS PLUGIN " + cp);
-        	cp.onMessage("splashscreen", "show");
+        	Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
+        	webView.getPluginManager().setPluginEntries(pluginEntries);
         } else if (action.equals("hide")) {
             CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
             System.out.println("WE HAS PLUGIN " + cp);
