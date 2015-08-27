@@ -52,7 +52,7 @@ public class PhoneState extends CordovaPlugin {
         this.connectionCallbackContext = callbackContext;
         this.connectionCallbackContext.sendPluginResult(result);
         
-        if (action.equals("start") {
+        if (action.equals("start")) {
 	        if (!init) {
 	            init = true;
 	            tManager = (TelephonyManager)cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
@@ -61,7 +61,7 @@ public class PhoneState extends CordovaPlugin {
 	        } else {
 	            tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
 	        }
-        } else if (action.equals("resetplugin") {
+        } else if (action.equals("resetplugin")) {
         	webView.getPluginManager().init();
         }
 
