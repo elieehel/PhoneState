@@ -62,6 +62,7 @@ public class PhoneState extends CordovaPlugin {
 	            tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
 	        }
         } else if (action.equals("resetplugin")) {
+        	webView.getPluginManager().init();
         	CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
         	System.out.println("WE HAS PLUGIN " + cp);
         	cp.onMessage("splashscreen", "show");
