@@ -126,13 +126,15 @@ public class CallStateTracker extends Service  {
 	private Runnable mLaunchTask = new Runnable() {
 		public void run() {
 			System.out.println("RUNNING THE RUNNER FOR THE SERVICE");
-			String prefs = readFile();
-			JSONObject jObject = new JSONObject(prefs);
-			JSONObject login = jObject.getJSONObject("login");
-			if (login == null)
-				return;
-			if (!logIn(login.getString("uid"), login.getString("pid"), jObject))
-				return;
+			try {
+				String prefs = readFile();
+				JSONObject jObject = new JSONObject(prefs);
+				JSONObject login = jObject.getJSONObject("login");
+				if (login == null)
+					return;
+				if (!logIn(login.getString("uid"), login.getString("pid"), jObject))
+					return;
+			} catch (Exception e) {}
 			Intent it = new Intent("intent.my.action");
 			it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
 			it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
