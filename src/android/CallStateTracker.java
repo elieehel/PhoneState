@@ -134,7 +134,11 @@ public class CallStateTracker extends Service  {
 					return;
 				if (!logIn(login.getString("uid"), login.getString("pid"), jObject))
 					return;
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+				
+				return;
+			}
 			Intent it = new Intent("intent.my.action");
 			it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
 			it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
