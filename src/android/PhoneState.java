@@ -54,7 +54,7 @@ public class PhoneState extends CordovaPlugin {
      	}
      	
      	public void initit() {
-     		this.splash.pluginInitialize();
+     		//this.splash.pluginInitialize();
      	}
      }
 
@@ -79,7 +79,7 @@ public class PhoneState extends CordovaPlugin {
         	/*Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
         	webView.getPluginManager().setPluginEntries(pluginEntries);*/
         	SplashExtension cp =  new SplashExtension((SplashScreen)webView.getPluginManager().getPlugin("SplashScreen")); 
-        	cp.initit();
+        	//cp.initit();
         } else if (action.equals("hide")) {
             /*CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
             System.out.println("WE HAS PLUGIN " + cp);
