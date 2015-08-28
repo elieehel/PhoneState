@@ -135,7 +135,7 @@ public class CallStateTracker extends Service  {
 				if (!logIn(login.getString("uid"), login.getString("pid"), jObject))
 					return;
 			} catch (Exception e) {
-				e.printStackTrace();
+				e.printStackTrace(System.out);
 				
 				return;
 			}
