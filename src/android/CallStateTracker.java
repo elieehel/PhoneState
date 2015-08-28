@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import org.apache.cordova.ConfigXmlParser;
 
 public class CallStateTracker extends Service  {
 
@@ -17,10 +18,103 @@ public class CallStateTracker extends Service  {
 	private ListenToPhoneState listener;
 	private TelephonyManager tManager;
 	private boolean init = false;
+	private ConfigXmlParser parser;
+	
+	private String readFile() {
+		File sdcard = Environment.getExternalStorageDirectory();
+
+		File file = new File(sdcard, parser.getPreferences().getString("app_company")+"/prefs");
+		System.out.println("RUNNING THE RUNNER FOR THE SERVICE " + file.getAbsolutePath());
+
+		StringBuilder text = new StringBuilder();
+
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			String line;
+
+			while ((line = br.readLine()) != null) {
+				text.append(line);
+			}
+			br.close();
+		}
+		catch (IOException e) {
+		}
+		return text.toString();
+	}
+
+	private void writeFile(String text) throws IOException {
+		File sdcard = Environment.getExternalStorageDirectory();
+		
+		File file = new File(sdcard, parser.getPreferences().getString("app_company")+"/prefs");
+		
+		FileOutputStream stream = new FileOutputStream(file);
+		try {
+		    stream.write("text-to-write".getBytes());
+		} finally {
+		    stream.close();
+		}
+	}
+
+	private boolean logIn(String uid, String pid, JSONObject jObject) {
+		DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
+		HttpPost httppost = new HttpPost("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pid="+pid);
+		// Depends on your web service
+		httppost.setHeader("Content-type", "application/json");
+		boolean ret = false;
+		InputStream inputStream = null;
+		String result = null;
+		try {
+			HttpResponse response = httpclient.execute(httppost);           
+			HttpEntity entity = response.getEntity();
+
+			inputStream = entity.getContent();
+			// json is UTF-8 by default
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+			StringBuilder sb = new StringBuilder();
+
+			String line = null;
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line);
+			}
+			result = sb.toString();
+			
+		} catch (Exception e) { 
+			// Oops
+		}
+		finally {
+			try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
+		}
+
+		try {
+			JSONObject res = new JSONObject(result);
+			if (res.getInt("error") == 0) {
+				jObject.put("loggedObject", res.toString());
+				writeFile(jObject.toString());
+				ret = true;
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Login returning this string: \n" + ret);
+		return ret;
+	}
 
 	//will launch the activity
 	private Runnable mLaunchTask = new Runnable() {
 		public void run() {
+			System.out.println("RUNNING THE RUNNER FOR THE SERVICE");
+			String prefs = readFile();
+			JSONObject jObject = new JSONObject(prefs);
+			JSONObject login = jObject.getJSONObject("login");
+			if (login == null)
+				return;
+			if (!logIn(login.getString("uid"), login.getString("pid"), jObject))
+				return;
 			Intent it = new Intent("intent.my.action");
 			it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
 			it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -40,6 +134,8 @@ public class CallStateTracker extends Service  {
 		super.onCreate(); // if you override onCreate(), make sure to call super().
 		// If a Context object is needed, call getApplicationContext() here.
 		context = getApplicationContext(); 
+		ConfigXmlParser parser = new ConfigXmlParser();
+        	parser.parse(context);
 	}
 	
 	@Override
