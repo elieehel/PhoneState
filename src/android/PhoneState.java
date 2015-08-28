@@ -64,8 +64,10 @@ public class PhoneState extends CordovaPlugin {
 	            tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
 	        }
         } else if (action.equals("resetplugin")) {
-        	Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
-        	webView.getPluginManager().setPluginEntries(pluginEntries);
+        	/*Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
+        	webView.getPluginManager().setPluginEntries(pluginEntries);*/
+        	CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
+        	cp.pluginInitialize();
         } else if (action.equals("hide")) {
             /*CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
             System.out.println("WE HAS PLUGIN " + cp);
