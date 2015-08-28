@@ -41,7 +41,7 @@ public class CallStateTracker extends Service  {
 	private String readFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
 
-		File file = new File(sdcard, parser.getPreferences().getString("app_company")+"/prefs");
+		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
 		System.out.println("RUNNING THE RUNNER FOR THE SERVICE " + file.getAbsolutePath());
 
 		StringBuilder text = new StringBuilder();
@@ -63,7 +63,7 @@ public class CallStateTracker extends Service  {
 	private void writeFile(String text) throws IOException {
 		File sdcard = Environment.getExternalStorageDirectory();
 		
-		File file = new File(sdcard, parser.getPreferences().getString("app_company")+"/prefs");
+		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
 		
 		FileOutputStream stream = new FileOutputStream(file);
 		try {
