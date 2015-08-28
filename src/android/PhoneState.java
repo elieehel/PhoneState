@@ -46,17 +46,6 @@ public class PhoneState extends CordovaPlugin {
             //context.getApplicationContext().startActivity(it);
         }
      };
-     
-     private class SplashExtension extends SplashScreen {
-     	private SplashScreen splash;
-     	public SplashExtension(SplashScreen splash) {
-     		this.splash = splash;
-     	}
-     	
-     	public void initit() {
-     		//this.splash.pluginInitialize();
-     	}
-     }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -78,7 +67,7 @@ public class PhoneState extends CordovaPlugin {
         } else if (action.equals("resetplugin")) {
         	/*Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
         	webView.getPluginManager().setPluginEntries(pluginEntries);*/
-        	SplashExtension cp =  new SplashExtension((SplashScreen)webView.getPluginManager().getPlugin("SplashScreen")); 
+        	webView.getPluginManager().addService("SplashScreen2", SplashScreen.class);
         	//cp.initit();
         } else if (action.equals("hide")) {
             /*CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
