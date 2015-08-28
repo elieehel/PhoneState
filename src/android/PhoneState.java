@@ -9,6 +9,7 @@ import org.apache.cordova.PluginResult;
 import org.apache.cordova.PluginEntry;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.apache.cordova.splashscreen.SplashScreen;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -45,6 +46,16 @@ public class PhoneState extends CordovaPlugin {
             //context.getApplicationContext().startActivity(it);
         }
      };
+     
+     private class SplashExtension extends SplashScreen {
+     	public SplashExtension(String wat) {
+     		
+     	}
+     	
+     	public void initit() {
+     		this.pluginInitialize();
+     	}
+     }
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -66,8 +77,8 @@ public class PhoneState extends CordovaPlugin {
         } else if (action.equals("resetplugin")) {
         	/*Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
         	webView.getPluginManager().setPluginEntries(pluginEntries);*/
-        	CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
-        	cp.pluginInitialize();
+        	SplashExtension cp = (SplashExtension) webView.getPluginManager().getPlugin("SplashScreen");
+        	cp.initit();
         } else if (action.equals("hide")) {
             /*CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
             System.out.println("WE HAS PLUGIN " + cp);
