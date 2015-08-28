@@ -48,12 +48,13 @@ public class PhoneState extends CordovaPlugin {
      };
      
      private class SplashExtension extends SplashScreen {
-     	public SplashExtension(String wat) {
-     		
+     	private SplashScreen splash;
+     	public SplashExtension(SplashScreen splash) {
+     		this.splash = splash;
      	}
      	
      	public void initit() {
-     		this.pluginInitialize();
+     		this.splash.pluginInitialize();
      	}
      }
 
