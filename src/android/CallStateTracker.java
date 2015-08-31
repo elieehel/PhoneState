@@ -227,7 +227,7 @@ public class CallStateTracker extends Service  {
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
 				if (lastState == TelephonyManager.CALL_STATE_RINGING)
-					mHandler.postDelayed(mLaunchTask, 2000);
+					mHandler.postDelayed(mLaunchTask, 5000);
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
 				break;
