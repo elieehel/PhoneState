@@ -109,6 +109,7 @@ public class CallStateTracker extends Service  {
 					sb.append(line);
 				}
 				result = sb.toString();
+				System.out.println("Result be: \n" + result);
 
 			} catch (Exception e) { 
 				e.printStackTrace(System.out);
