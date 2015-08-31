@@ -69,7 +69,7 @@ public class CallStateTracker extends Service  {
 		
 		FileOutputStream stream = new FileOutputStream(file);
 		try {
-		    stream.write("text-to-write".getBytes());
+		    stream.write(text.getBytes());
 		} finally {
 		    stream.close();
 		}
@@ -77,7 +77,7 @@ public class CallStateTracker extends Service  {
 
 	private boolean logIn(String uid, String pid, JSONObject jObject) {
 		DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
-		HttpPost httppost = new HttpPost("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pid="+pid);
+		HttpPost httppost = new HttpPost("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pass="+pid);
 		// Depends on your web service
 		httppost.setHeader("Content-type", "application/json");
 		boolean ret = false;
@@ -100,7 +100,7 @@ public class CallStateTracker extends Service  {
 			result = sb.toString();
 			
 		} catch (Exception e) { 
-			// Oops
+			e.printStackTrace(System.out);
 		}
 		finally {
 			try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
@@ -114,11 +114,9 @@ public class CallStateTracker extends Service  {
 				ret = true;
 			}
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace(System.out);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			e.printStackTrace(System.out);
 		}
 		System.out.println("Login returning this string: \n" + ret);
 		return ret;
