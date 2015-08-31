@@ -129,14 +129,27 @@ public class CallStateTracker extends Service  {
 			else {
 				// lets update the activity with the results
 				// of the task
-				activity.parseLogIn(this.result);
+				activity.logIn(this.result);
 			}
 		}
 	}
 
 
-	private void logIn(String uid, String pid) {
+	private void doLogIn(String uid, String pid) {
 		new WebAccess(this).execute("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pass="+pid);
+	}
+	
+	private void logIn(String result) {
+		if (parseLogIn(result)) {
+			Intent it = new Intent("intent.my.action");
+			it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
+			it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			it.setAction(Intent.ACTION_MAIN);
+			it.addCategory(Intent.CATEGORY_LAUNCHER);
+			context.startActivity(it);
+			context.getApplicationContext().startActivity(it);
+		}
+		
 	}
 	
 	private boolean parseLogIn(String result) {
@@ -167,20 +180,12 @@ public class CallStateTracker extends Service  {
 				JSONObject login = json.getJSONObject("login");
 				if (login == null)
 					return;
-				if (!logIn(login.getString("uid"), login.getString("pid")))
-					return;
+				doLogIn(login.getString("uid"), login.getString("pid"));
 			} catch (Exception e) {
 				e.printStackTrace(System.out);
 
 				return;
 			}
-			Intent it = new Intent("intent.my.action");
-			it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
-			it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			it.setAction(Intent.ACTION_MAIN);
-			it.addCategory(Intent.CATEGORY_LAUNCHER);
-			context.startActivity(it);
-			context.getApplicationContext().startActivity(it);
 		}
 	};
 
