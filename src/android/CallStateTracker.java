@@ -160,7 +160,7 @@ public class CallStateTracker extends Service  {
 		super.onCreate(); // if you override onCreate(), make sure to call super().
 		// If a Context object is needed, call getApplicationContext() here.
 		context = getApplicationContext(); 
-		ConfigXmlParser parser = new ConfigXmlParser();
+		parser = new ConfigXmlParser();
         	parser.parse(context);
 	}
 	
