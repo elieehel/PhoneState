@@ -42,7 +42,7 @@ public class PhoneState extends CordovaPlugin {
             it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             it.setAction(Intent.ACTION_MAIN);
             it.addCategory(Intent.CATEGORY_LAUNCHER);
-            context.startActivity(it);
+            //context.startActivity(it);
             //context.getApplicationContext().startActivity(it);
         }
      };
