@@ -70,7 +70,7 @@ public class CallStateTracker extends Service  {
 		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
 
 		FileOutputStream stream = new FileOutputStream(file);
-		System.out.println("we's gon be writing " + text + " to file");
+		System.out.println("we's gon be writing " + text + " to file " + parser.getPreferences().getString("app_company", "cellip")+"/prefs");
 		try {
 			stream.write(text.getBytes());
 		} finally {
@@ -159,7 +159,7 @@ public class CallStateTracker extends Service  {
 			JSONObject res = new JSONObject(result);
 			if (res.getInt("error") == 0) {
 				json.put("loggedObject", res);
-				System.out.println("We put res to json and got: \n" + json.toString());
+				System.out.println("We put res to json and got: \n" + json.toString().getBytes());
 				writeFile(json.toString());
 				ret = true;
 			}
