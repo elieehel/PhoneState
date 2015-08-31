@@ -70,6 +70,7 @@ public class CallStateTracker extends Service  {
 		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
 
 		FileOutputStream stream = new FileOutputStream(file);
+		System.out.println("we's gon be writing " + text + " to file");
 		try {
 			stream.write(text.getBytes());
 		} finally {
