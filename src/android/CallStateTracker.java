@@ -109,7 +109,6 @@ public class CallStateTracker extends Service  {
 					sb.append(line);
 				}
 				result = sb.toString();
-				System.out.println("Result be: \n" + result);
 
 			} catch (Exception e) { 
 				e.printStackTrace(System.out);
@@ -157,6 +156,8 @@ public class CallStateTracker extends Service  {
 		boolean ret = false;
 		try {
 			JSONObject res = new JSONObject(result);
+				System.out.println("Result be: \n" + result);
+				System.out.println("Parse result be: \n" + res.toString());
 			if (res.getInt("error") == 0) {
 				json.put("loggedObject", res.toString());
 				writeFile(json.toString());
