@@ -42,12 +42,8 @@ public class CallStateTracker extends Service  {
 
 	private String readFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
-		System.out.println("Parser is " + parser);
-		System.out.println("Parser.getPreferences() is " + parser.getPreferences());
-		System.out.println("Parser.getString(appcompany) is " + parser.getPreferences().getString("app_company", "cellip"));
 		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
-		System.out.println("RUNNING THE RUNNER FOR THE SERVICE " + file.getAbsolutePath());
-
+		
 		StringBuilder text = new StringBuilder();
 
 		try {
@@ -70,7 +66,6 @@ public class CallStateTracker extends Service  {
 		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
 
 		FileOutputStream stream = new FileOutputStream(file);
-		System.out.println("we's gon be writing  to file " + parser.getPreferences().getString("app_company", "cellip")+"/prefs " + text);
 		try {
 			stream.write(text.getBytes());
 		} finally {
@@ -159,28 +154,23 @@ public class CallStateTracker extends Service  {
 			JSONObject res = new JSONObject(result);
 			if (res.getInt("error") == 0) {
 				json.put("loggedObject", res);
-				System.out.println("We put res to json and got: \n" + json.toString().getBytes());
 				writeFile(json.toString());
 				ret = true;
 			}
 		} catch (JSONException e) {
-			e.printStackTrace(System.out);
 		} catch (IOException e) {
-			e.printStackTrace(System.out);
 		}
-		System.out.println("Login returning this string: \n" + ret);
 		return ret;
 	}
 
 	//will launch the activity
 	private Runnable mLaunchTask = new Runnable() {
 		public void run() {
-			System.out.println("RUNNING THE RUNNER FOR THE SERVICE");
 			try {
 				String prefs = readFile();
 				json = new JSONObject(prefs);
 				JSONObject login = json.getJSONObject("login");
-				if (login == null)
+				if (login == null || !json.getBoolean("allow_popup"))
 					return;
 				doLogIn(login.getString("uid"), login.getString("pid"));
 			} catch (Exception e) {
