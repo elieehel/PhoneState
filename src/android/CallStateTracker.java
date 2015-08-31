@@ -40,7 +40,9 @@ public class CallStateTracker extends Service  {
 	
 	private String readFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
-
+		System.out.println("Parser is " + parser);
+		System.out.println("Parser.getPreferences() is " + parser.getPreferences());
+		System.out.println("Parser.getString(appcompany) is " + parser.getPreferences().getString("app_company", "cellip"));
 		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
 		System.out.println("RUNNING THE RUNNER FOR THE SERVICE " + file.getAbsolutePath());
 
