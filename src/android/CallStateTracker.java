@@ -170,7 +170,7 @@ public class CallStateTracker extends Service  {
 				String prefs = readFile();
 				json = new JSONObject(prefs);
 				JSONObject login = json.getJSONObject("login");
-				if (login == null || !json.getBoolean("allow_popup"))
+				if (login == null || !json.getBoolean("allow_popup") || !json.getString("linkedNumber").matches("^\\d+$"))
 					return;
 				doLogIn(login.getString("uid"), login.getString("pid"));
 			} catch (Exception e) {
