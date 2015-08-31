@@ -135,7 +135,7 @@ public class CallStateTracker extends Service  {
 	}
 
 
-	private boolean logIn(String uid, String pid) {
+	private void logIn(String uid, String pid) {
 		new WebAccess(this).execute("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pass="+pid);
 	}
 	
