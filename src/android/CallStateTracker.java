@@ -2,12 +2,12 @@ package com.cellip.lyncapp;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -16,12 +16,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.apache.cordova.ConfigXmlParser;
 
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
@@ -37,7 +37,8 @@ public class CallStateTracker extends Service  {
 	private TelephonyManager tManager;
 	private boolean init = false;
 	private ConfigXmlParser parser;
-	
+	private JSONObject json;
+
 	private String readFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
 		System.out.println("Parser is " + parser);
@@ -64,53 +65,86 @@ public class CallStateTracker extends Service  {
 
 	private void writeFile(String text) throws IOException {
 		File sdcard = Environment.getExternalStorageDirectory();
-		
+
 		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
-		
+
 		FileOutputStream stream = new FileOutputStream(file);
 		try {
-		    stream.write(text.getBytes());
+			stream.write(text.getBytes());
 		} finally {
-		    stream.close();
+			stream.close();
 		}
 	}
 
-	private boolean logIn(String uid, String pid, JSONObject jObject) {
-		DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
-		HttpPost httppost = new HttpPost("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pass="+pid);
-		// Depends on your web service
-		httppost.setHeader("Content-type", "application/json");
-		boolean ret = false;
-		InputStream inputStream = null;
-		String result = null;
-		try {
-			HttpResponse response = httpclient.execute(httppost);           
-			HttpEntity entity = response.getEntity();
+	private static class WebAccess extends AsyncTask<String, Void, Void> {
 
-			inputStream = entity.getContent();
-			// json is UTF-8 by default
-			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-			StringBuilder sb = new StringBuilder();
+		private WeakReference<CallStateTracker> mRef;
+		private String result = null;
 
-			String line = null;
-			while ((line = reader.readLine()) != null)
-			{
-				sb.append(line);
+		public WebAccess(CallStateTracker activity) {
+			mRef = new WeakReference<CallStateTracker>(activity);
+		}
+		
+		@Override
+		protected Void doInBackground(String... params) {
+			DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
+			HttpPost httppost = new HttpPost(params[0]);
+			// Depends on your web service
+			httppost.setHeader("Content-type", "application/json");
+			boolean ret = false;
+			InputStream inputStream = null;
+			try {
+				HttpResponse response = httpclient.execute(httppost);           
+				HttpEntity entity = response.getEntity();
+
+				inputStream = entity.getContent();
+				// json is UTF-8 by default
+				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+				StringBuilder sb = new StringBuilder();
+
+				String line = null;
+				while ((line = reader.readLine()) != null)
+				{
+					sb.append(line);
+				}
+				result = sb.toString();
+
+			} catch (Exception e) { 
+				e.printStackTrace(System.out);
 			}
-			result = sb.toString();
-			
-		} catch (Exception e) { 
-			e.printStackTrace(System.out);
-		}
-		finally {
-			try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
+			finally {
+				try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
+			}
+			return null;
 		}
 
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			CallStateTracker activity = mRef.get();
+			if (activity == null) {
+				// the activity reference was cleared, 
+				// lets forget about it
+			}
+			else {
+				// lets update the activity with the results
+				// of the task
+				activity.parseLogIn(this.result);
+			}
+		}
+	}
+
+
+	private boolean logIn(String uid, String pid) {
+		new WebAccess(this).execute("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pass="+pid);
+	}
+	
+	private boolean parseLogIn(String result) {
+		boolean ret = false;
 		try {
 			JSONObject res = new JSONObject(result);
 			if (res.getInt("error") == 0) {
-				jObject.put("loggedObject", res.toString());
-				writeFile(jObject.toString());
+				json.put("loggedObject", res.toString());
+				writeFile(json.toString());
 				ret = true;
 			}
 		} catch (JSONException e) {
@@ -128,15 +162,15 @@ public class CallStateTracker extends Service  {
 			System.out.println("RUNNING THE RUNNER FOR THE SERVICE");
 			try {
 				String prefs = readFile();
-				JSONObject jObject = new JSONObject(prefs);
-				JSONObject login = jObject.getJSONObject("login");
+				json = new JSONObject(prefs);
+				JSONObject login = json.getJSONObject("login");
 				if (login == null)
 					return;
-				if (!logIn(login.getString("uid"), login.getString("pid"), jObject))
+				if (!logIn(login.getString("uid"), login.getString("pid")))
 					return;
 			} catch (Exception e) {
 				e.printStackTrace(System.out);
-				
+
 				return;
 			}
 			Intent it = new Intent("intent.my.action");
@@ -159,9 +193,9 @@ public class CallStateTracker extends Service  {
 		// If a Context object is needed, call getApplicationContext() here.
 		context = getApplicationContext(); 
 		parser = new ConfigXmlParser();
-        	parser.parse(context);
+		parser.parse(context);
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		if (tManager != null)
