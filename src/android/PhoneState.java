@@ -67,7 +67,7 @@ public class PhoneState extends CordovaPlugin {
         } else if (action.equals("resetplugin")) {
         	/*Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
         	webView.getPluginManager().setPluginEntries(pluginEntries);*/
-        	webView.getPluginManager().addService("SplashScreen2"+Math.random(), "org.apache.cordova.splashscreen.SplashScreen");
+        	//webView.getPluginManager().addService("SplashScreen2"+Math.random(), "org.apache.cordova.splashscreen.SplashScreen");
         	//cp.initit();
         } else if (action.equals("hide")) {
             /*CordovaPlugin cp = webView.getPluginManager().getPlugin("SplashScreen");
@@ -127,9 +127,6 @@ public class PhoneState extends CordovaPlugin {
                  // you will be here when you cut call
                 
                 sendUpdate("busy");
-
-				if (lastState == TelephonyManager.CALL_STATE_RINGING)
-					mHandler.postDelayed(mLaunchTask, 1500);
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
                 break;
