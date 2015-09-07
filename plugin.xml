@@ -30,6 +30,15 @@ version="2.0.0">
 
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/application/*">
+            <service android:exported="false" android:name=".CallStateTracker" />
+            <receiver android:name="OutgoingCallInterceptor">                          
+                <intent-filter android:priority="50000">                                   
+                    <action android:name="android.intent.action.NEW_OUTGOING_CALL" />  
+                </intent-filter>
+            </receiver>
         </config-file>
     </platform>
     <platform name="ios">
