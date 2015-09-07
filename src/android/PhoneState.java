@@ -111,9 +111,7 @@ public class PhoneState extends CordovaPlugin {
     	if (connectionCallbackContext != null) {
     		TelephonyManager tm = (TelephonyManager)this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE); 
 		String phoneNumber = tm.getLine1Number();
-    		PluginResult result = new PluginResult(PluginResult.Status.OK, phoneNumber);
-    		result.setKeepCallback(true;
-    		connectionCallbackContext.sendPluginResult(result);
+    		connectionCallbackContext.success(phoneNumber);
     	}
     }
     
