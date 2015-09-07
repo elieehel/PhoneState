@@ -112,8 +112,9 @@ public class PhoneState extends CordovaPlugin {
     	if (callbackContext != null) {
     		TelephonyManager tm = (TelephonyManager)cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
 		String phoneNumber = tm.getLine1Number();
+		boolean isGSM  = (tm.getPhoneType() == TelephonyManage.PHONE_TYPE_GSM);
 		boolean hasSim = !(tm.getSimState() == TelephonyManager.SIM_STATE_ABSENT);
-    		callbackContext.success(hasSim + "|" + phoneNumber);
+    		callbackContext.success(isGSM + "|" + hasSim + "|" + phoneNumber);
     	}
     }
     
