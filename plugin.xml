@@ -38,7 +38,7 @@ version="2.0.0">
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <service android:exported="false" android:name=".CallStateTracker" />
-            <receiver android:name="OutgoingCallInterceptor">                          
+            <receiver android:name="CellipCallInterceptor">                          
                 <intent-filter android:priority="50000">                                   
                     <action android:name="android.intent.action.NEW_OUTGOING_CALL" />  
                 </intent-filter>
