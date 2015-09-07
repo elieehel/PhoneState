@@ -64,8 +64,11 @@ public class PhoneState extends CordovaPlugin {
 	        } else {
 	            tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
 	        }
+	        context = this.cordova.getActivity().getApplicationContext(); 
+	        Intent intent = new Intent(context, CallStateTracker.class);
+	        cordova.getActivity().startService(intent);
         } else if (action.equals("getnumber")) {
-        	this.getNumber();
+        	this.getNumber(callbackContext);
         } else if (action.equals("resetplugin")) {
         	/*Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
         	webView.getPluginManager().setPluginEntries(pluginEntries);*/
@@ -77,15 +80,13 @@ public class PhoneState extends CordovaPlugin {
             cp.onMessage("splashscreen", "hide");*/
         }
 
-        context = this.cordova.getActivity().getApplicationContext(); 
+        
         /*if (action.equals("echo")) {
             String message = args.getString(0);
             this.echo(message, callbackContext);
             return true;
         }
         return false;*/
-        Intent intent = new Intent(context, CallStateTracker.class);
-        cordova.getActivity().startService(intent);
         return true;
     }
 
@@ -107,11 +108,11 @@ public class PhoneState extends CordovaPlugin {
         
     }
     
-    private void getNumber() {
-    	if (connectionCallbackContext != null) {
+    private void getNumber(CallbackContext callbackContext) {
+    	if (callbackContext != null) {
     		TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE); 
 		String phoneNumber = tm.getLine1Number();
-    		connectionCallbackContext.success(phoneNumber);
+    		callbackContext.success(phoneNumber);
     	}
     }
     
