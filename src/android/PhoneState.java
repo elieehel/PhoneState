@@ -64,6 +64,8 @@ public class PhoneState extends CordovaPlugin {
 	        } else {
 	            tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
 	        }
+        } else if (action.equals("getnumber")) {
+        	this.getNumber();
         } else if (action.equals("resetplugin")) {
         	/*Collection<PluginEntry> pluginEntries = webView.getPluginManager().getPluginEntries();
         	webView.getPluginManager().setPluginEntries(pluginEntries);*/
@@ -103,6 +105,16 @@ public class PhoneState extends CordovaPlugin {
         
         this.webView = webView;
         
+    }
+    
+    private void getNumber() {
+    	if (connectionCallbackContext != null) {
+    		TelephonyManager tm = (TelephonyManager)this.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE); 
+		String phoneNumber = tm.getLine1Number();
+    		PluginResult result = new PluginResult(PluginResult.Status.OK, phoneNumber);
+    		result.setKeepCallback(true;
+    		connectionCallbackContext.sendPluginResult(result);
+    	}
     }
     
     private void sendUpdate(String type) {
