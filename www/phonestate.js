@@ -36,6 +36,10 @@ phonestate.pluginReload = function() {
 	exec(function() {console.log("RELOADED");}, function(err) {console.log("reload error"); console.log(err);}, "PhoneState", "resetplugin", ["asd"]);
 };
 
+phonestate.getNumber = function() {
+	exec(function() {console.log("GET THAT NUMBER");}, function(err) {console.log("error GETTING THAT NUBMER");}, "PhoneState", "getnumber", ["asd"]);	
+};
+
 phonestate.splashReset = function() {
 	exec(function() {console.log("HIDDEN");}, function(err) {console.log("reload error"); console.log(err);}, "PhoneState", "hide", ["asd"]);
 };
