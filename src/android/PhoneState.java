@@ -110,7 +110,7 @@ public class PhoneState extends CordovaPlugin {
     
     private void getNumber(CallbackContext callbackContext) {
     	if (callbackContext != null) {
-    		TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE); 
+    		TelephonyManager tm = (TelephonyManager)cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE); 
 		String phoneNumber = tm.getLine1Number();
     		callbackContext.success(phoneNumber);
     	}
