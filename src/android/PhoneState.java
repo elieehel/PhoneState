@@ -37,7 +37,7 @@ public class PhoneState extends CordovaPlugin {
     //will launch the activity
     private Runnable mLaunchTask = new Runnable() {
         public void run() {
-            Intent it = new Intent("intent.my.action");
+            Intent it = new Intent("com.cellip.show.transfer");
             it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
             it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
             it.setAction(Intent.ACTION_MAIN);
