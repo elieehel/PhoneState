@@ -31,6 +31,10 @@ version="2.0.0">
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.READ_PHONE_STATE" />
             <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+            <intent-filter>
+                <action android:name="com.cellip.show.transfer" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
             <service android:exported="false" android:name=".CallStateTracker" />
