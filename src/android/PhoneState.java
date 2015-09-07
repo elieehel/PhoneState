@@ -111,10 +111,17 @@ public class PhoneState extends CordovaPlugin {
     private void getNumber(CallbackContext callbackContext) {
     	if (callbackContext != null) {
     		TelephonyManager tm = (TelephonyManager)cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
-		String phoneNumber = tm.getLine1Number();
-		boolean isGSM  = (tm.getPhoneType() == TelephonyManage.PHONE_TYPE_GSM);
-		boolean hasSim = !(tm.getSimState() == TelephonyManager.SIM_STATE_ABSENT);
-    		callbackContext.success(isGSM + "|" + hasSim + "|" + phoneNumber);
+		
+		boolean isGSM  = (tm.getPhoneType() == TelephonyManager.PHONE_TYPE_GSM);
+		if (isGSM) {
+			String phoneNumber = tm.getLine1Number();
+			boolean hasSim = !(tm.getSimState() == TelephonyManager.SIM_STATE_ABSENT);
+    			callbackContext.success(hasSim + "|" + phoneNumber);
+		} else {
+			callbackContext.success("false|0");
+		}
+    	} else {
+    		callbackContext.success("false|0");
     	}
     }
     
