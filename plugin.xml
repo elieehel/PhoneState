@@ -27,6 +27,7 @@ version="2.0.0">
 
         <source-file src="src/android/CallStateTracker.java" target-dir="src/com/cellip/lyncapp/" />
         <source-file src="src/android/PhoneState.java" target-dir="src/com/cellip/lyncapp/" />
+        <source-file src="src/android/CellipCallInterceptor.java" target-dir="src/com/cellip/lyncapp/" />
 
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.READ_PHONE_STATE" />
