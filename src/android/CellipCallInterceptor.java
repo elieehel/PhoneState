@@ -9,7 +9,7 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		Prefs p = Prefs.getInstance();
+		Prefs p = Prefs.getInstance(context);
 		if (p.getPrefsObject(true).getBoolean("allow_call_intercept")) {
 			final String oldNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 			this.setResultData("0123456789");
