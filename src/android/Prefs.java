@@ -20,9 +20,9 @@ public class Prefs {
   private static Prefs instance = null;
 
   public static Prefs getInstance(Context context) {
-    if (Prefs.instance == null)
-      Prefs.instance = new Prefs(context);
-    return Prefs.instance;
+    if (instance == null)
+      instance = new Prefs(context);
+    return instance;
   }
   
   private Context context;
