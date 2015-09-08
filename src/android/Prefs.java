@@ -30,7 +30,7 @@ public class Prefs {
   private JSONObject prefsObj;
   
   private Prefs(Context context) {
-		context = getApplicationContext(); 
+		this.context = context; 
 		parser = new ConfigXmlParser();
 		parser.parse(context);
   }
