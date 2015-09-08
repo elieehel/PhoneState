@@ -42,7 +42,9 @@ public class Prefs {
   }
   
   public void reloadPreferences() {
-    this.prefsObj = new JSONObject(this.readFile());
+    try {
+    	this.prefsObj = new JSONObject(this.readFile());
+    } catch (JSONException e) {}
   }
   
   private String readFile() {
