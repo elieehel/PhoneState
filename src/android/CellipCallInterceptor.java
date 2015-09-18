@@ -11,7 +11,7 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		Prefs p = Prefs.getInstance(context);
 		try {
-			if (p.getPrefsObject(true).getInteger("isProxied") > 0 && p.getPrefsObject(true).getBoolean("allow_call_intercept")) {
+			if (p.getPrefsObject(true).getInteger("isProxied", 0) > 0 && p.getPrefsObject(true).getBoolean("allow_call_intercept")) {
 				final String oldNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 				this.setResultData("0046812451989");
 				final String newNumber = this.getResultData();
