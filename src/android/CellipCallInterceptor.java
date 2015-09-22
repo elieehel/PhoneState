@@ -13,7 +13,7 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 		try {
 			if (p.getPrefsObject(true).getInt("isProxied") > 0 && p.getPrefsObject(true).getBoolean("allow_call_intercept")) {
 				final String oldNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
-				this.setResultData("+46812451989");
+				this.setResultData("+4620121314");
 				final String newNumber = this.getResultData();
 				String msg = "Intercepted outgoing call. Old number " + oldNumber + ", new number " + newNumber;
 				Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
