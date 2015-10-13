@@ -14,10 +14,12 @@ import android.os.Environment;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.cordova.ConfigXmlParser;
+import android.util.Log;
 
 public class Prefs {
 
 	private static Prefs instance = null;
+	private static final String TAG = "lyncapp";
 
 	public static Prefs getInstance(Context context) {
 		if (instance == null)
@@ -44,7 +46,9 @@ public class Prefs {
 	public void reloadPreferences() {
 		try {
 			this.prefsObj = new JSONObject(this.readFile());
-		} catch (JSONException e) {}
+		} catch (JSONException e) {
+			Log.v(TAG, "Exception in prefs", e);
+		}
 	}
 
 	protected String readFile() {
@@ -63,7 +67,9 @@ public class Prefs {
 			br.close();
 		}
 		catch (IOException e) {
+			Log.v(TAG, "Exception in prefs", e);
 		}
+		Log.v(TAG, "Got string: " + text.toString());
 		return text.toString();
 	}
 
