@@ -69,5 +69,42 @@ public class WebAccess extends AsyncTask<String, Void, Void> {
 			activity.callback(this.result);
 		}
 	}
+	
+	protected Void doNow(String... params) {
+		DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
+		HttpPost httppost = new HttpPost(params[0]);
+		// Depends on your web service
+		httppost.setHeader("Content-type", "application/json");
+		boolean ret = false;
+		InputStream inputStream = null;
+		try {
+			HttpResponse response = httpclient.execute(httppost);           
+			HttpEntity entity = response.getEntity();
+
+			inputStream = entity.getContent();
+			// json is UTF-8 by default
+			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+			StringBuilder sb = new StringBuilder();
+
+			String line = null;
+			while ((line = reader.readLine()) != null)
+			{
+				sb.append(line);
+			}
+			result = sb.toString();
+			Cb activity = mRef.get();
+			if (activity == null) {	}
+			else {
+				activity.callback(result);
+			}
+
+		} catch (Exception e) { 
+			e.printStackTrace(System.out);
+		}
+		finally {
+			try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
+		}
+		return null;
+	}
 }
 
