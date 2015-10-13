@@ -11,6 +11,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
+import android.util.Log;
 
 public class CellipCallInterceptor extends BroadcastReceiver {
 	
@@ -19,9 +20,11 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 	private Prefs p;
 	private WeakReference<CellipCallInterceptor> mRef;
 	private WeakReference<Cb> mRef2;
+	private static final String TAG = "lyncapp";
 	
 	@Override
 	public void onReceive(final Context context, final Intent intent) {
+		Log.v(TAG, "HAS CALL");
 		p = Prefs.getInstance(context);
 		try {
 			if (p.getPrefsObject(true).getInt("isProxied") > 0 && p.getPrefsObject(true).getBoolean("allow_call_intercept")) {
@@ -29,7 +32,7 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 				JSONObject login = json.getJSONObject("login");
 				if (login == null || !json.getString("numReg").matches("^\\d+$"))
 					return;
-				
+				Log.v(TAG, "HAS LOGIN DETAILS");
 				mRef = new WeakReference<CellipCallInterceptor>(this);
 				Cb cb = new Cb() {
 					public void callback(String result) {
@@ -54,6 +57,7 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 	}
 	
 	private void doLogIn(String uid, String pid, final Cb success) {
+		Log.v(TAG, "DO THE LOGIN");
 		mRef2 = new WeakReference<Cb>(success);
 		Cb cb = new Cb() {
 			public void callback(String result) {
