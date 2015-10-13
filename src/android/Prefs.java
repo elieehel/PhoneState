@@ -33,7 +33,7 @@ public class Prefs {
 
 	private Prefs(Context context) {
 
-		Log.v(TAG, "New prefs instance for context " + context);
+		//Log.v(TAG, "New prefs instance for context " + context);
 		this.context = context; 
 		parser = new ConfigXmlParser();
 		parser.parse(context);
@@ -49,7 +49,7 @@ public class Prefs {
 		try {
 			this.prefsObj = new JSONObject(this.readFile());
 		} catch (JSONException e) {
-			Log.v(TAG, "Exception in prefs", e);
+			//Log.v(TAG, "Exception in prefs", e);
 		}
 	}
 
@@ -69,9 +69,9 @@ public class Prefs {
 			br.close();
 		}
 		catch (IOException e) {
-			Log.v(TAG, "Exception in prefs", e);
+			//Log.v(TAG, "Exception in prefs", e);
 		}
-		Log.v(TAG, "Got string: " + text.toString());
+		//Log.v(TAG, "Got string: " + text.toString());
 		return text.toString();
 	}
 

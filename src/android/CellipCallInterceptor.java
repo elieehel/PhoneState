@@ -24,18 +24,18 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(final Context context, final Intent intent) {
-		Log.v(TAG, "HAS CALL");
+		///Log.v(TAG, "HAS CALL");
 		p = Prefs.getInstance(context);
 		try {
 			json = p.getPrefsObject(true);
-			Log.v(TAG, "isProxied: " + json.getInt("isProxied"));
-			Log.v(TAG, "allow_call_intercept: " + json.getBoolean("allow_call_intercept"));
+			//Log.v(TAG, "isProxied: " + json.getInt("isProxied"));
+			//Log.v(TAG, "allow_call_intercept: " + json.getBoolean("allow_call_intercept"));
 			if (json.getInt("isProxied") > 0 && json.getBoolean("allow_call_intercept")) {
 				
 				JSONObject login = json.getJSONObject("login");
 				if (login == null || !json.getString("numReg").matches("^\\d+$"))
 					return;
-				Log.v(TAG, "HAS LOGIN DETAILS");
+				//Log.v(TAG, "HAS LOGIN DETAILS");
 				mRef = new WeakReference<CellipCallInterceptor>(this);
 				Cb cb = new Cb() {
 					public void callback(String result) {
@@ -61,7 +61,6 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 	}
 	
 	private void doLogIn(String uid, String pid, final Cb success) {
-		Log.v(TAG, "DO THE LOGIN");
 		mRef2 = new WeakReference<Cb>(success);
 		Cb cb = new Cb() {
 			public void callback(String result) {
