@@ -71,7 +71,7 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 				}
 			}
 		};
-		new WebAccess(cb).execute("https://www.cellip.com/sv/minasidor/json/lync_app/login.html?user="+uid+"&pass="+pid);
+		new WebAccess(cb).doNow("https://www.cellip.com/sv/minasidor/json/lync_app/login.html?user="+uid+"&pass="+pid);
 	}
 	
 	private boolean parseLogIn(String result) {
