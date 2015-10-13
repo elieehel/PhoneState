@@ -32,6 +32,8 @@ public class Prefs {
 	private JSONObject prefsObj;
 
 	private Prefs(Context context) {
+
+		Log.v(TAG, "New prefs instance");
 		this.context = context; 
 		parser = new ConfigXmlParser();
 		parser.parse(context);
