@@ -33,7 +33,7 @@ public class Prefs {
 
 	private Prefs(Context context) {
 
-		Log.v(TAG, "New prefs instance");
+		Log.v(TAG, "New prefs instance for context " + context);
 		this.context = context; 
 		parser = new ConfigXmlParser();
 		parser.parse(context);
