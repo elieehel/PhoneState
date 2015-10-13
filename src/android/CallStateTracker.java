@@ -1,29 +1,14 @@
 package com.cellip.lyncapp;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.apache.cordova.ConfigXmlParser;
 
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
@@ -37,115 +22,26 @@ public class CallStateTracker extends Service  {
 	private ListenToPhoneState listener;
 	private TelephonyManager tManager;
 	private boolean init = false;
-	private ConfigXmlParser parser;
 	private JSONObject json;
-
-	private String readFile() {
-		File sdcard = Environment.getExternalStorageDirectory();
-		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
-		
-		StringBuilder text = new StringBuilder();
-
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String line;
-
-			while ((line = br.readLine()) != null) {
-				text.append(line);
-			}
-			br.close();
-		}
-		catch (IOException e) {
-		}
-		return text.toString();
-	}
-
-	private void writeFile(String text) throws IOException {
-		File sdcard = Environment.getExternalStorageDirectory();
-
-		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
-
-		FileOutputStream stream = new FileOutputStream(file);
-		try {
-			stream.write(text.getBytes());
-		} finally {
-			stream.close();
-		}
-	}
-
-	private static class WebAccess extends AsyncTask<String, Void, Void> {
-
-		private WeakReference<CallStateTracker> mRef;
-		private String result = null;
-
-		public WebAccess(CallStateTracker activity) {
-			mRef = new WeakReference<CallStateTracker>(activity);
-		}
-		
-		@Override
-		protected Void doInBackground(String... params) {
-			DefaultHttpClient   httpclient = new DefaultHttpClient(new BasicHttpParams());
-			HttpPost httppost = new HttpPost(params[0]);
-			// Depends on your web service
-			httppost.setHeader("Content-type", "application/json");
-			boolean ret = false;
-			InputStream inputStream = null;
-			try {
-				HttpResponse response = httpclient.execute(httppost);           
-				HttpEntity entity = response.getEntity();
-
-				inputStream = entity.getContent();
-				// json is UTF-8 by default
-				BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
-				StringBuilder sb = new StringBuilder();
-
-				String line = null;
-				while ((line = reader.readLine()) != null)
-				{
-					sb.append(line);
-				}
-				result = sb.toString();
-
-			} catch (Exception e) { 
-				e.printStackTrace(System.out);
-			}
-			finally {
-				try{if(inputStream != null)inputStream.close();}catch(Exception squish){}
-			}
-			return null;
-		}
-
-		@Override
-		protected void onPostExecute(Void aVoid) {
-			CallStateTracker activity = mRef.get();
-			if (activity == null) {
-				// the activity reference was cleared, 
-				// lets forget about it
-			}
-			else {
-				// lets update the activity with the results
-				// of the task
-				activity.logIn(this.result);
-			}
-		}
-	}
+	private Prefs pU;
+	
 
 
 	private void doLogIn(String uid, String pid) {
-		new WebAccess(this).execute("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pass="+pid);
-	}
-	
-	private void logIn(String result) {
-		if (parseLogIn(result)) {
-			Intent it = new Intent("com.cellip.show.transfer");
-			it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
-			it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			it.setAction(Intent.ACTION_MAIN);
-			it.addCategory(Intent.CATEGORY_LAUNCHER);
-			context.startActivity(it);
-			context.getApplicationContext().startActivity(it);
-		}
-		
+		Cb cb = new Cb() {
+			public void callback(String result) {
+				if (parseLogIn(result)) {
+					Intent it = new Intent("com.cellip.show.transfer");
+					it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
+					it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					it.setAction(Intent.ACTION_MAIN);
+					it.addCategory(Intent.CATEGORY_LAUNCHER);
+					context.startActivity(it);
+					context.getApplicationContext().startActivity(it);
+				}
+			}
+		};
+		new WebAccess(cb).execute("https://www.cellip.com/sv/minasidor/json/lync_app/login_back.html?user="+uid+"&pass="+pid);
 	}
 	
 	private boolean parseLogIn(String result) {
@@ -154,7 +50,7 @@ public class CallStateTracker extends Service  {
 			JSONObject res = new JSONObject(result);
 			if (res.getInt("error") == 0) {
 				json.put("loggedObject", res);
-				writeFile(json.toString());
+				pU.writeFile(json.toString());
 				ret = true;
 			}
 		} catch (JSONException e) {
@@ -167,7 +63,7 @@ public class CallStateTracker extends Service  {
 	private Runnable mLaunchTask = new Runnable() {
 		public void run() {
 			try {
-				String prefs = readFile();
+				String prefs = pU.readFile();
 				json = new JSONObject(prefs);
 				JSONObject login = json.getJSONObject("login");
 				if (login == null || !json.getBoolean("allow_popup") || (json.getInt("isProxied") == 0 && (!json.getString("linkedNumber").matches("^\\d+$") || !json.getString("linkedNumber").replaceAll("^46", "0").equals(json.getString("numReg").replaceAll("^46", "0")))))
@@ -189,9 +85,8 @@ public class CallStateTracker extends Service  {
 	public void onCreate() {
 		super.onCreate(); // if you override onCreate(), make sure to call super().
 		// If a Context object is needed, call getApplicationContext() here.
-		context = getApplicationContext(); 
-		parser = new ConfigXmlParser();
-		parser.parse(context);
+		context = getApplicationContext();
+		pU = Prefs.getInstance(context);
 	}
 
 	@Override

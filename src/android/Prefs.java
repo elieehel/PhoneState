@@ -17,40 +17,40 @@ import org.apache.cordova.ConfigXmlParser;
 
 public class Prefs {
 
-  private static Prefs instance = null;
+	private static Prefs instance = null;
 
-  public static Prefs getInstance(Context context) {
-    if (instance == null)
-      instance = new Prefs(context);
-    return instance;
-  }
-  
-  private Context context;
-  private ConfigXmlParser parser;
-  private JSONObject prefsObj;
-  
-  private Prefs(Context context) {
+	public static Prefs getInstance(Context context) {
+		if (instance == null)
+			instance = new Prefs(context);
+		return instance;
+	}
+
+	private Context context;
+	private ConfigXmlParser parser;
+	private JSONObject prefsObj;
+
+	private Prefs(Context context) {
 		this.context = context; 
 		parser = new ConfigXmlParser();
 		parser.parse(context);
-  }
-  
-  public JSONObject getPrefsObject(boolean reload) {
-    if (reload)
-      this.reloadPreferences();
-    return this.prefsObj;
-  }
-  
-  public void reloadPreferences() {
-    try {
-    	this.prefsObj = new JSONObject(this.readFile());
-    } catch (JSONException e) {}
-  }
-  
-  private String readFile() {
+	}
+
+	public JSONObject getPrefsObject(boolean reload) {
+		if (reload)
+			this.reloadPreferences();
+		return this.prefsObj;
+	}
+
+	public void reloadPreferences() {
+		try {
+			this.prefsObj = new JSONObject(this.readFile());
+		} catch (JSONException e) {}
+	}
+
+	protected String readFile() {
 		File sdcard = Environment.getExternalStorageDirectory();
 		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
-		
+
 		StringBuilder text = new StringBuilder();
 
 		try {
@@ -67,7 +67,7 @@ public class Prefs {
 		return text.toString();
 	}
 
-	private void writeFile(String text) throws IOException {
+	protected void writeFile(String text) throws IOException {
 		File sdcard = Environment.getExternalStorageDirectory();
 
 		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
@@ -80,6 +80,6 @@ public class Prefs {
 		}
 	}
 
-  
+
 
 }
