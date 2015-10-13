@@ -74,8 +74,7 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 				ret = true;
 			}
 		} catch (JSONException e) {
-		} catch (IOException e) {
-		}
+		} 
 		return ret;
 	}
 
