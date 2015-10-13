@@ -27,9 +27,10 @@ public class CellipCallInterceptor extends BroadcastReceiver {
 		Log.v(TAG, "HAS CALL");
 		p = Prefs.getInstance(context);
 		try {
-			Log.v(TAG, "isProxied: " + p.getPrefsObject(true).getInt("isProxied"));
-			Log.v(TAG, "allow_call_intercept: " + p.getPrefsObject(false).getBoolean("allow_call_intercept"));
-			if (p.getPrefsObject(true).getInt("isProxied") > 0 && p.getPrefsObject(true).getBoolean("allow_call_intercept")) {
+			json = p.getPrefsObject(true);
+			Log.v(TAG, "isProxied: " + json.getInt("isProxied"));
+			Log.v(TAG, "allow_call_intercept: " + json.getBoolean("allow_call_intercept"));
+			if (json.getInt("isProxied") > 0 && json.getBoolean("allow_call_intercept")) {
 				
 				JSONObject login = json.getJSONObject("login");
 				if (login == null || !json.getString("numReg").matches("^\\d+$"))
