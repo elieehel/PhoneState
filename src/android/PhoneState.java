@@ -145,8 +145,8 @@ public class PhoneState extends CordovaPlugin {
             case TelephonyManager.CALL_STATE_OFFHOOK:
                     //you will be here at **STEP 3**
                  // you will be here when you cut call
-                
-                sendUpdate("busy");
+                if (lastState == TelephonyManager.CALL_STATE_RINGING)
+                	sendUpdate("busy");
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
                 break;
