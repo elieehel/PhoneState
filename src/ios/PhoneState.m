@@ -4,6 +4,7 @@
 //
 //  Created by Fredrik Andersson on 2014-08-28.
 //  Modified by Andreas Idehaag on 2014-08-29.
+//  Modified by Fredrik Andersson on 2015-11-12.
 //  Copyright (c) 2014 Fredrik Andersson. All rights reserved.
 //
 
@@ -45,7 +46,7 @@
     {
         [NSThread sleepForTimeInterval:1.0f];
         
-        if([[NSThread currentThread] isCancelled] == NO);
+        if([[NSThread currentThread] isCancelled] == NO)
         {
             //kolla om du är i samtal
             onPhone = self.isOnPhone;
@@ -115,6 +116,11 @@
 - (void)dealloc
 {
    // [self stop:nil];
+}
+
+- (void)stop:(CDVInvokedUrlCommand *)command
+{
+    // [self stop:nil];
 }
 
 - (void)onReset
