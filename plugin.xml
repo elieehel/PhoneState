@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
-xmlns:android="http://schemas.android.com/apk/res/android"
-id="com.cellip.lyncapp"
-version="2.0.0">
-<name>Hello</name>
-<asset src="www/phonestate.js" target="js/phonestate.js" />
-<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="com.cellip.lyncapp" version="0.0.1">
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0" id="com.cellip.lyncapp" version="0.0.1" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
     <name>PhoneState</name>
-    <description>Plugin to extract advanced network information such as cell ID, LAC etc. for android devices</description>
+    <description>Plugin to extract phonestate</description>
     <license>Apache 2.0</license>
     <keywords>cordova,signal,network</keywords>
-    <author>Abbas Dawood, Karl Baria</author>
+    <author>Andreas Idehaag/author>
     <!--<repo>https://github.com/abbasdawood/com.abbasdawood.cordova.signal.git</repo>-->
 
     <js-module src="www/phonestate.js" name="phonestate">
