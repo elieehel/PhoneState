@@ -4,8 +4,8 @@
     <description>Plugin to extract phonestate</description>
     <license>Apache 2.0</license>
     <keywords>cordova,signal,network</keywords>
-    <author>Andreas Idehaag/author>
-    <!--<repo>https://github.com/abbasdawood/com.abbasdawood.cordova.signal.git</repo>-->
+    <author>Andreas Idehaag</author>
+    <!--<repo>https://github.com/elieehel/PhoneState.git</repo>-->
 
     <js-module src="www/phonestate.js" name="phonestate">
         <clobbers target="phonestate" />
@@ -47,11 +47,10 @@
     		<framework src="Foundation.framework" />
     		<framework src="CoreTelephony.framework" />
     		<config-file target="res/xml/config.xml" parent="/*">
-    				<feature name="PhoneState">
-    						<param name="ios-package" value="PhoneState" />
-    				</feature>
+    			<feature name="PhoneState">
+    				<param name="ios-package" value="PhoneState" />
+    			</feature>
     		</config-file>
-    		
     		<header-file src="src/ios/PhoneState.h" />
     		<source-file src="src/ios/PhoneState.m" />
     </platform>
