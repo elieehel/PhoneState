@@ -4,6 +4,7 @@
 //
 //  Created by Fredrik Andersson on 2014-08-28.
 //  Modified by Andreas Idehaag on 2014-08-29.
+//  Modified by Fredrik Andersson on 2015-11-12.
 //  Copyright (c) 2014 Fredrik Andersson. All rights reserved.
 //
 
@@ -17,7 +18,6 @@
 - (BOOL)isOnPhone;
 - (void)start:(CDVInvokedUrlCommand*)command;
 - (void)thredEntryPoint:(id)paramSender;
-- (BOOL)isOnPhone;
 - (void)stop:(CDVInvokedUrlCommand*)command;
 - (void)dealloc;
 	
