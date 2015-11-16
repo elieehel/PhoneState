@@ -46,7 +46,7 @@
     <platform name="ios">
     		<framework src="Foundation.framework" />
     		<framework src="CoreTelephony.framework" />
-    		<config-file target="res/xml/config.xml" parent="/*">
+    		<config-file target="config.xml" parent="/*">
     			<feature name="PhoneState">
     				<param name="ios-package" value="PhoneState" />
     			</feature>
