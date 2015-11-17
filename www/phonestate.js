@@ -36,6 +36,10 @@ phonestate.pluginReload = function() {
 	exec(function() {console.log("RELOADED");}, function(err) {console.log("reload error"); console.log(err);}, "PhoneState", "resetplugin", ["asd"]);
 };
 
+phonestate.iOSState = function() {
+	exec(phonestate.change, phonestate.error, "PhoneState", "start", ["asd"]);
+};
+
 phonestate.getNumber = function(func) {
 	exec(func, function(err) {console.log("error GETTING THAT NUBMER"); console.log(err);}, "PhoneState", "getnumber", ["asd"]);	
 };
