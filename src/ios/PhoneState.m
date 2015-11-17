@@ -90,15 +90,23 @@
 		_callbackId = command.callbackId;
 
 		//skapar bakgrundstråden
-    [NSThread detachNewThreadSelector:@selector(thredEntryPoint:)
-                             toTarget:[self appDelegate]
-                           withObject:[self appDelegate]];
+    //[NSThread detachNewThreadSelector:@selector(thredEntryPoint:)
+                             //toTarget:[self appDelegate]
+                           //withObject:[self appDelegate]];
     
+    CDVPluginResult *pluginResult = nil;
     
-    CDVPluginResult *pluginResult = [ CDVPluginResult
+    if (self.isOnPhone) {
+    	pluginResult = [ CDVPluginResult
                                       resultWithStatus:CDVCommandStatus_OK
-                                       messageAsString:@"Thread start"
+                                       messageAsString:@"busy"
                                     ];
+    } else {
+    	pluginResult = [ CDVPluginResult
+                                      resultWithStatus:CDVCommandStatus_OK
+                                       messageAsString:@"idle"
+                                    ];
+    }
     
     [pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:_callbackId];
