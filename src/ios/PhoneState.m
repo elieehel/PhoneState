@@ -56,7 +56,7 @@
                 previousResult = YES;
                 pluginResult = [ CDVPluginResult
                                       resultWithStatus:CDVCommandStatus_OK
-                                       messageAsString:@"In call"
+                                       messageAsString:@"busy"
                                     ];
 								[pluginResult setKeepCallbackAsBool:YES];
                 [self.commandDelegate sendPluginResult:pluginResult callbackId:_callbackId];
@@ -67,7 +67,7 @@
                 previousResult = NO;
                 pluginResult = [ CDVPluginResult
                                       resultWithStatus:CDVCommandStatus_OK
-                                       messageAsString:@"Not in call"
+                                       messageAsString:@"idle"
                                     ];
                 [pluginResult setKeepCallbackAsBool:YES];
                 [self.commandDelegate sendPluginResult:pluginResult callbackId:_callbackId];
