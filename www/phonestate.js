@@ -37,7 +37,7 @@ phonestate.pluginReload = function() {
 };
 
 phonestate.iOSState = function() {
-	exec(phonestate.change, phonestate.error, "PhoneState", "start", ["asd"]);
+	//exec(phonestate.change, phonestate.error, "PhoneState", "start", ["asd"]);
 };
 
 phonestate.getNumber = function(func) {
