@@ -66,8 +66,13 @@ public class CallStateTracker extends Service  {
 				String prefs = pU.readFile();
 				json = new JSONObject(prefs);
 				JSONObject login = json.getJSONObject("login");
-				if (login == null || !json.getBoolean("allow_popup") || ((json.optInt("isProxied") == 0 || !json.optBoolean("isProxied")) && (!json.getString("linkedNumber").matches("^\\d+$") || !json.getString("linkedNumber").replaceAll("^46", "0").equals(json.getString("numReg").replaceAll("^46", "0")))))
+				if (login == null || !json.getBoolean("allow_popup") || ((json.optInt("isProxied") == 0 && !json.optBoolean("isProxied")) && (!json.getString("linkedNumber").matches("^\\d+$") || !json.getString("linkedNumber").replaceAll("^46", "0").equals(json.getString("numReg").replaceAll("^46", "0"))))) {
+					System.out.println("phonestate not logging in! ");
+					System.out.println("Is null? " + login == null);
+					System.out.println("Allowing popup? " + json.getBoolean("allow_popup"));
+					System.out.println("Proxied? " + (json.optInt("isProxied", 0) == 0 && !json.optBoolean("isProxied"));
 					return;
+				}
 				doLogIn(login.getString("uid"), login.getString("pid"));
 			} catch (Exception e) {
 				e.printStackTrace(System.out);
