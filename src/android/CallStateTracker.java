@@ -30,7 +30,9 @@ public class CallStateTracker extends Service  {
 	private void doLogIn(String uid, String pid) {
 		Cb cb = new Cb() {
 			public void callback(String result) {
+				System.out.println("we in the doLogIn() callback function with result");
 				if (parseLogIn(result)) {
+					System.out.println("Result properly parsed, trying to fire intent");
 					Intent it = new Intent("com.cellip.show.transfer");
 					it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
 					it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
