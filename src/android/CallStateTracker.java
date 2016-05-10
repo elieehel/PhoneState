@@ -33,9 +33,9 @@ public class CallStateTracker extends Service  {
 	private void doLogIn(String uid, String pid) {
 		Cb cb = new Cb() {
 			public void callback(String result) {
-				Log.i(TAG, "login_back returned, parsing...");
+				//Log.i(TAG, "login_back returned, parsing...");
 				if (parseLogIn(result)) {
-					Log.i(TAG, "Result properly parsed, trying to fire intent");
+					//Log.i(TAG, "Result properly parsed, trying to fire intent");
 					Intent it = new Intent("com.cellip.show.transfer");
 					it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
 					it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -43,7 +43,7 @@ public class CallStateTracker extends Service  {
 					it.addCategory(Intent.CATEGORY_LAUNCHER);
 					context.startActivity(it);
 					context.getApplicationContext().startActivity(it);
-					Log.i(TAG, "Activity should start now, context is " + context + " and appcontext is " + context.getApplicationContext());
+					//Log.i(TAG, "Activity should start now, context is " + context + " and appcontext is " + context.getApplicationContext());
 				}
 			}
 		};
@@ -73,13 +73,9 @@ public class CallStateTracker extends Service  {
 				json = new JSONObject(prefs);
 				JSONObject login = json.getJSONObject("login");
 				if (login == null || !json.getBoolean("allow_popup") || ((json.optInt("isProxied") == 0 && !json.optBoolean("isProxied")) && (!json.getString("linkedNumber").matches("^\\d+$") || !json.getString("linkedNumber").replaceAll("^46", "0").equals(json.getString("numReg").replaceAll("^46", "0"))))) {
-					System.out.println("phonestate not logging in! ");
-					System.out.println("Is null? " + login == null);
-					System.out.println("Allowing popup? " + json.getBoolean("allow_popup"));
-					System.out.println("Proxied? " + (json.optInt("isProxied", 0) == 0 && !json.optBoolean("isProxied")));
 					return;
 				}
-				Log.i(TAG, "Finished reading prefs file, will try to login");
+				//Log.i(TAG, "Finished reading prefs file, will try to login");
 				doLogIn(login.getString("uid"), login.getString("pid"));
 			} catch (Exception e) {
 				e.printStackTrace(System.out);

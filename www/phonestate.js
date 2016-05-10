@@ -3,7 +3,7 @@ var exec = require('cordova/exec'),
     cordova = require('cordova');
 
 var PhoneState = function() {
-	console.log("PHONESTATE BEING INITIATED");
+	//console.log("PHONESTATE BEING INITIATED");
 	this.channels = {
 		watchingnetwork: cordova.addWindowEventHandler("watchingnetwork")
 	};
@@ -14,18 +14,18 @@ var PhoneState = function() {
 
 
 PhoneState.subChange = function() {
-	console.log("Trying to start listener");
+	//console.log("Trying to start listener");
 	exec(phonestate.change, phonestate.error, "PhoneState", "start", ["asd"]);
 };
 
 PhoneState.prototype.error = function(e) {
-	console.log("ERROR IN PHONESTATE");
-	console.log(e);
+	//console.log("ERROR IN PHONESTATE");
+	//console.log(e);
 };
 
 PhoneState.prototype.change = function(c) {
-	console.log("CHANGE IN PHONESTATE");
-	console.log(c);
+	//console.log("CHANGE IN PHONESTATE");
+	//console.log(c);
 	phonestate.state = c;
 	cordova.fireWindowEvent("watchingnetwork", c);
 };

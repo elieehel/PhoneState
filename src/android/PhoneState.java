@@ -59,7 +59,7 @@ public class PhoneState extends CordovaPlugin {
         this.connectionCallbackContext.sendPluginResult(result);
         
         if (action.equals("start")) {
-            Log.i(TAG, "Asked to start TelephonyManager, previous one is " + tManager);
+            //Log.i(TAG, "Asked to start TelephonyManager, previous one is " + tManager);
 	        //if (!init) {
 	            init = true;
 	            tManager = (TelephonyManager)cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
@@ -70,7 +70,7 @@ public class PhoneState extends CordovaPlugin {
 	        //}
             
 	        context = this.cordova.getActivity().getApplicationContext(); 
-            Log.i(TAG, "Also starting service from context " + context);
+            //Log.i(TAG, "Also starting service from context " + context);
 	        Intent intent = new Intent(context, CallStateTracker.class);
 	        cordova.getActivity().startService(intent);
         } else if (action.equals("getnumber")) {
@@ -132,13 +132,12 @@ public class PhoneState extends CordovaPlugin {
     }
     
     private void sendUpdate(String type) {
-        Log.i(TAG, "asked to send update of type " + type + " and cbcontext is " + connectionCallbackContext);
+        //Log.i(TAG, "asked to send update of type " + type + " and cbcontext is " + connectionCallbackContext);
         if (connectionCallbackContext != null) {
             PluginResult result = new PluginResult(PluginResult.Status.OK, type);
             result.setKeepCallback(true);
             connectionCallbackContext.sendPluginResult(result);
         } else {
-        	System.out.println("CALLBACKCONTEXT WAS NULL, ERRMAGERD");
         }
         //webView.postMessage("watchingnetwork", "webview "+type);
     }
@@ -147,16 +146,15 @@ public class PhoneState extends CordovaPlugin {
 
         public void onCallStateChanged(int state, String incomingNumber) {
 
-            Log.i(TAG, "New state is " + state + ", last state was " + lastState + " for " + connectionCallbackContext);
+            //Log.i(TAG, "New state is " + state + ", last state was " + lastState + " for " + connectionCallbackContext);
             switch (state) {
             case TelephonyManager.CALL_STATE_IDLE:
                 lastState = state;
                 sendUpdate("idle");
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
-                    //you will be here at **STEP 3**
-                 // you will be here when you cut call
-                System.out.println("Last state is " + lastState);
+                //you will be here at **STEP 3**
+                // you will be here when you cut call
                 if (lastState == TelephonyManager.CALL_STATE_RINGING)
                 	sendUpdate("busy");
                 break;
@@ -164,7 +162,6 @@ public class PhoneState extends CordovaPlugin {
                 lastState = state;
                 break;
             default:
-            	sendUpdate(""+state);
                 break;
             }
         }
