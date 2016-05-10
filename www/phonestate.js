@@ -14,6 +14,7 @@ var PhoneState = function() {
 
 
 PhoneState.subChange = function() {
+	console.log("Trying to start listener");
 	exec(phonestate.change, phonestate.error, "PhoneState", "start", ["asd"]);
 };
 
