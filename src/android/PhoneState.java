@@ -150,6 +150,7 @@ public class PhoneState extends CordovaPlugin {
             Log.i(TAG, "New state is " + state + ", last state was " + lastState + " for " + connectionCallbackContext);
             switch (state) {
             case TelephonyManager.CALL_STATE_IDLE:
+                lastState = state;
                 sendUpdate("idle");
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
@@ -160,14 +161,12 @@ public class PhoneState extends CordovaPlugin {
                 	sendUpdate("busy");
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
-                sendUpdate("ringing");
+                lastState = state;
                 break;
             default:
             	sendUpdate(""+state);
                 break;
             }
-            lastState = state;
         }
-
     }
 }
