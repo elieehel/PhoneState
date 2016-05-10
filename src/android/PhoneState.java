@@ -17,11 +17,14 @@ import android.content.Intent;
 import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 /**
 * This class echoes a string called from JavaScript.
 */
 public class PhoneState extends CordovaPlugin {
+
+    private static final String TAG = "phonestate";
     
     private CallbackContext connectionCallbackContext;
     private boolean init = false;
@@ -56,6 +59,7 @@ public class PhoneState extends CordovaPlugin {
         this.connectionCallbackContext.sendPluginResult(result);
         
         if (action.equals("start")) {
+            Log.i(TAG, "Asked to start TelephonyManager, previous one is " + tManager);
 	        //if (!init) {
 	            init = true;
 	            tManager = (TelephonyManager)cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
@@ -64,7 +68,9 @@ public class PhoneState extends CordovaPlugin {
 	        //} else {
 	            //tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
 	        //}
+            
 	        context = this.cordova.getActivity().getApplicationContext(); 
+            Log.i(TAG, "Also starting service from context " + context);
 	        Intent intent = new Intent(context, CallStateTracker.class);
 	        cordova.getActivity().startService(intent);
         } else if (action.equals("getnumber")) {
@@ -126,6 +132,7 @@ public class PhoneState extends CordovaPlugin {
     }
     
     private void sendUpdate(String type) {
+        Log.i(TAG, "asked to send update of type " + type + " and cbcontext is " + connectionCallbackContext);
         if (connectionCallbackContext != null) {
             PluginResult result = new PluginResult(PluginResult.Status.OK, type);
             result.setKeepCallback(true);
@@ -140,6 +147,7 @@ public class PhoneState extends CordovaPlugin {
 
         public void onCallStateChanged(int state, String incomingNumber) {
 
+            Log.i(TAG, "New state is " + state + ", last state was " + lastState);
             switch (state) {
             case TelephonyManager.CALL_STATE_IDLE:
                 sendUpdate("idle");

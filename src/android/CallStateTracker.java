@@ -13,8 +13,11 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 public class CallStateTracker extends Service  {
+
+	private static final String TAG = "phonestate";
 
 	private Handler mHandler = new Handler();
 	private static int lastState = TelephonyManager.CALL_STATE_IDLE;
@@ -30,9 +33,9 @@ public class CallStateTracker extends Service  {
 	private void doLogIn(String uid, String pid) {
 		Cb cb = new Cb() {
 			public void callback(String result) {
-				System.out.println("we in the doLogIn() callback function with result");
+				Log.i(TAG, "login_back returned, parsing...");
 				if (parseLogIn(result)) {
-					System.out.println("Result properly parsed, trying to fire intent");
+					Log.i(TAG, "Result properly parsed, trying to fire intent");
 					Intent it = new Intent("com.cellip.show.transfer");
 					it.setComponent(new ComponentName(context.getPackageName(), MainActivity.class.getName()));
 					it.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -40,6 +43,7 @@ public class CallStateTracker extends Service  {
 					it.addCategory(Intent.CATEGORY_LAUNCHER);
 					context.startActivity(it);
 					context.getApplicationContext().startActivity(it);
+					Log.i(TAG, "Activity should start now, context is " + context + " and appcontext is " + context.getApplicationContext());
 				}
 			}
 		};
@@ -75,6 +79,7 @@ public class CallStateTracker extends Service  {
 					System.out.println("Proxied? " + (json.optInt("isProxied", 0) == 0 && !json.optBoolean("isProxied")));
 					return;
 				}
+				Log.i(TAG, "Finished reading prefs file, will try to login");
 				doLogIn(login.getString("uid"), login.getString("pid"));
 			} catch (Exception e) {
 				e.printStackTrace(System.out);
