@@ -56,14 +56,14 @@ public class PhoneState extends CordovaPlugin {
         this.connectionCallbackContext.sendPluginResult(result);
         
         if (action.equals("start")) {
-	        if (!init) {
+	        //if (!init) {
 	            init = true;
 	            tManager = (TelephonyManager)cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);
 	            listener = new ListenToPhoneState();
 	            tManager.listen(listener, PhoneStateListener.LISTEN_CALL_STATE);
-	        } else {
+	        //} else {
 	            //tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
-	        }
+	        //}
 	        context = this.cordova.getActivity().getApplicationContext(); 
 	        Intent intent = new Intent(context, CallStateTracker.class);
 	        cordova.getActivity().startService(intent);
