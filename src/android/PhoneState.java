@@ -130,6 +130,8 @@ public class PhoneState extends CordovaPlugin {
             PluginResult result = new PluginResult(PluginResult.Status.OK, type);
             result.setKeepCallback(true);
             connectionCallbackContext.sendPluginResult(result);
+        } else {
+        	System.out.println("CALLBACKCONTEXT WAS NULL, ERRMAGERD");
         }
         //webView.postMessage("watchingnetwork", "webview "+type);
     }
@@ -149,8 +151,10 @@ public class PhoneState extends CordovaPlugin {
                 	sendUpdate("busy");
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
+                sendUpdate("ringing");
                 break;
             default:
+            	sendUpdate(state);
                 break;
             }
             lastState = state;
