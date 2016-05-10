@@ -70,7 +70,7 @@ public class CallStateTracker extends Service  {
 					System.out.println("phonestate not logging in! ");
 					System.out.println("Is null? " + login == null);
 					System.out.println("Allowing popup? " + json.getBoolean("allow_popup"));
-					System.out.println("Proxied? " + (json.optInt("isProxied", 0) == 0 && !json.optBoolean("isProxied"));
+					System.out.println("Proxied? " + (json.optInt("isProxied", 0) == 0 && !json.optBoolean("isProxied")));
 					return;
 				}
 				doLogIn(login.getString("uid"), login.getString("pid"));
