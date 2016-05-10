@@ -17,9 +17,13 @@ PhoneState.subChange = function() {
 };
 
 PhoneState.prototype.error = function(e) {
+	console.log("ERROR IN PHONESTATE");
+	console.log(e);
 };
 
 PhoneState.prototype.change = function(c) {
+	console.log("CHANGE IN PHONESTATE");
+	console.log(c);
 	phonestate.state = c;
 	cordova.fireWindowEvent("watchingnetwork", c);
 };
