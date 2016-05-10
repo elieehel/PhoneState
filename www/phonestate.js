@@ -3,6 +3,7 @@ var exec = require('cordova/exec'),
     cordova = require('cordova');
 
 var PhoneState = function() {
+	console.log("PHONESTATE BEING INITIATED");
 	this.channels = {
 		watchingnetwork: cordova.addWindowEventHandler("watchingnetwork")
 	};
