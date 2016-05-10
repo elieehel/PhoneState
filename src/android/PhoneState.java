@@ -154,7 +154,7 @@ public class PhoneState extends CordovaPlugin {
                 sendUpdate("ringing");
                 break;
             default:
-            	sendUpdate(state);
+            	sendUpdate(""+state);
                 break;
             }
             lastState = state;
