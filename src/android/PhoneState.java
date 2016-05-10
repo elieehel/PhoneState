@@ -147,7 +147,7 @@ public class PhoneState extends CordovaPlugin {
 
         public void onCallStateChanged(int state, String incomingNumber) {
 
-            Log.i(TAG, "New state is " + state + ", last state was " + lastState);
+            Log.i(TAG, "New state is " + state + ", last state was " + lastState + " for " + connectionCallbackContext);
             switch (state) {
             case TelephonyManager.CALL_STATE_IDLE:
                 sendUpdate("idle");
