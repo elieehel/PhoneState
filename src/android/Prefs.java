@@ -54,8 +54,7 @@ public class Prefs {
 	}
 
 	protected String readFile() {
-		File sdcard = Environment.getExternalStorageDirectory();
-		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
+		File file = new File(this.context.getFilesDir(), "prefs");
 
 		StringBuilder text = new StringBuilder();
 
@@ -76,9 +75,7 @@ public class Prefs {
 	}
 
 	protected void writeFile(String text) throws IOException {
-		File sdcard = Environment.getExternalStorageDirectory();
-
-		File file = new File(sdcard, parser.getPreferences().getString("app_company", "cellip")+"/prefs");
+		File file = new File(this.context.getFilesDir(), "prefs");
 
 		FileOutputStream stream = new FileOutputStream(file);
 		try {
