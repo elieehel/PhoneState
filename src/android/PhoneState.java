@@ -36,6 +36,7 @@ public class PhoneState extends CordovaPlugin {
     private Context context;
     //will care for all posts
     private Handler mHandler = new Handler();
+    private boolean justStarted = false;
     
     //will launch the activity
     private Runnable mLaunchTask = new Runnable() {
@@ -68,11 +69,12 @@ public class PhoneState extends CordovaPlugin {
 	        //} else {
 	            //tManager.listen(listener, PhoneStateListener.LISTEN_NONE);
 	        //}
-            
+            	justStarted = true;
 	        context = this.cordova.getActivity().getApplicationContext(); 
             //Log.i(TAG, "Also starting service from context " + context);
 	        Intent intent = new Intent(context, CallStateTracker.class);
 	        cordova.getActivity().startService(intent);
+		
         } else if (action.equals("getnumber")) {
         	this.getNumber(callbackContext);
         } else if (action.equals("resetplugin")) {
@@ -155,8 +157,9 @@ public class PhoneState extends CordovaPlugin {
             case TelephonyManager.CALL_STATE_OFFHOOK:
                 //you will be here at **STEP 3**
                 // you will be here when you cut call
-                if (lastState == TelephonyManager.CALL_STATE_RINGING)
+                if (lastState == TelephonyManager.CALL_STATE_RINGING || justStarted)
                 	sendUpdate("busy");
+		
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
                 lastState = state;
@@ -164,6 +167,7 @@ public class PhoneState extends CordovaPlugin {
             default:
                 break;
             }
+	    justStarted = false;
         }
     }
 }
