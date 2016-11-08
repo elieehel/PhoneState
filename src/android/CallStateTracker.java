@@ -135,10 +135,6 @@ public class CallStateTracker extends Service  {
 			case TelephonyManager.CALL_STATE_OFFHOOK:
 				if (lastState == TelephonyManager.CALL_STATE_RINGING)
 					mHandler.postDelayed(mLaunchTask, 3500);
-				else
-					try {
-				 		pU.writeIncomingFile(false);
-					} catch (Exception e) {}
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
 				break;
