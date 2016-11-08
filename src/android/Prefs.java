@@ -85,6 +85,12 @@ public class Prefs {
 		}
 	}
 
-
-
+	protected void writeIncomingFile(boolean incoming) throws IOException {
+		File file = new File(this.context.getFilesDir(), "incoming"); 
+		FileOutputStream stream = new FileOutputStream(file);
+		try {
+			stream.write(incoming.getBytes());
+		} finally {
+			stream.close();
+		}
 }
