@@ -128,13 +128,17 @@ public class CallStateTracker extends Service  {
 
 			switch (state) {
 			case TelephonyManager.CALL_STATE_IDLE:
-				 	pU.writeIncomingFile(false);
+					try {
+				 		pU.writeIncomingFile(false);
+					} catch (Exception e) {}
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
 				if (lastState == TelephonyManager.CALL_STATE_RINGING)
 					mHandler.postDelayed(mLaunchTask, 3500);
 				else
-					pU.writeIncomingFile(false);
+					try {
+				 		pU.writeIncomingFile(false);
+					} catch (Exception e) {}
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
 				break;
