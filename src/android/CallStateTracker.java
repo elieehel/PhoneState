@@ -75,6 +75,7 @@ public class CallStateTracker extends Service  {
 				if (login == null || !json.getBoolean("allow_popup") || ((json.optInt("isProxied") == 0 && !json.optBoolean("isProxied")) && (!json.getString("linkedNumber").matches("^\\d+$") || !json.getString("linkedNumber").replaceAll("^46", "0").equals(json.getString("numReg").replaceAll("^46", "0"))))) {
 					return;
 				}
+				pU.writeIncomingFile(true);
 				//Log.i(TAG, "Finished reading prefs file, will try to login");
 				doLogIn(login.getString("uid"), login.getString("pid"));
 			} catch (Exception e) {
@@ -127,10 +128,13 @@ public class CallStateTracker extends Service  {
 
 			switch (state) {
 			case TelephonyManager.CALL_STATE_IDLE:
+				 	pU.writeIncomingFile(false);
 				break;
 			case TelephonyManager.CALL_STATE_OFFHOOK:
 				if (lastState == TelephonyManager.CALL_STATE_RINGING)
 					mHandler.postDelayed(mLaunchTask, 3500);
+				else
+					pU.writeIncomingFile(false);
 				break;
 			case TelephonyManager.CALL_STATE_RINGING:
 				break;
