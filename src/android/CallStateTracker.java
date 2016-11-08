@@ -72,10 +72,10 @@ public class CallStateTracker extends Service  {
 				String prefs = pU.readFile();
 				json = new JSONObject(prefs);
 				JSONObject login = json.getJSONObject("login");
+				pU.writeIncomingFile(true);
 				if (login == null || !json.getBoolean("allow_popup") || ((json.optInt("isProxied") == 0 && !json.optBoolean("isProxied")) && (!json.getString("linkedNumber").matches("^\\d+$") || !json.getString("linkedNumber").replaceAll("^46", "0").equals(json.getString("numReg").replaceAll("^46", "0"))))) {
 					return;
 				}
-				pU.writeIncomingFile(true);
 				//Log.i(TAG, "Finished reading prefs file, will try to login");
 				doLogIn(login.getString("uid"), login.getString("pid"));
 			} catch (Exception e) {
