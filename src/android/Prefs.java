@@ -93,4 +93,5 @@ public class Prefs {
 		} finally {
 			stream.close();
 		}
+	}
 }
